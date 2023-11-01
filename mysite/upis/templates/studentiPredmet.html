@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block studentiPredmet %}
+
+{% if request.user.uloga_id == 5 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiProfesor' %}">Predmeti</a>
+	<h2>Popis studenata:</h2>
+	<form action="{% url 'studentiPredmet' predmet_id=predmet_id %}" method="post">
+        {% csrf_token %}
+        <Button type='submit' name="odabir" value="1">Svi</Button>
+		<Button type='submit' name="odabir" value="2">Polozili</Button>
+		<Button type='submit' name="odabir" value="3">Izgubili Potpis</Button>
+    </form>
+	<table border="1">
+		<tr>
+			<th>Student</th>
+			<th>Status</th>
+			<th>Uredi</th>
+		<tr>
+		{% for student in studenti %}
+			{% for upis in upisi %}
+				{% if student.id == upis.korisnik_id %}
+					<tr>
+						<th>{{ student.email }}</th>
+						<th>{{ upis.status }}</th>
+						{% if upis.status == "enr" %}
+							<th><a href="{% url 'promjeniStatusProfesor' student_id=student.id predmet_id=upis.predmet_id %}">Promjeni status</a></th>
+						{% else %}
+							<th> Nemoguce mijenjati! </th>
+						{% endif %}
+					</tr>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+{% elif request.user.uloga_id == 6 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiAdmin' %}">Predmeti</a>
+	<a href="{% url 'studenti' %}">Studenti</a>
+	<a href="{% url 'profesori' %}">Profesori</a>
+	<h2>Popis studenata:</h2>
+	<form action="{% url 'studentiPredmet' predmet_id=predmet_id %}" method="post">
+        {% csrf_token %}
+        <Button type='submit' name="odabir" value="1">Svi</Button>
+		<Button type='submit' name="odabir" value="2">Polozili</Button>
+		<Button type='submit' name="odabir" value="3">Izgubili Potpis</Button>
+    </form>
+	<table border="1">
+		<tr>
+			<th>Student</th>
+			<th>Status</th>
+			<th>Uredi</th>
+		<tr>
+		{% for student in studenti %}
+			{% for upis in upisi %}
+				{% if student.id == upis.korisnik_id %}
+					<tr>
+						<th>{{ student.email }}</th>
+						<th>{{ upis.status }}</th>
+						<th><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=upis.predmet_id %}">Promjeni status</a></th>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+{% else %}
+<h3>Nemate pravo pristupa!</h3>
+{% endif %}
+
+{% endblock studentiPredmet %}
+

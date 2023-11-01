@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block urediStudent %}
+
+<h2>Uredi studenta</h2>
+<form method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit">Spremi promjene</button>
+</form>
+
+{% endblock urediStudent %}

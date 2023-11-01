@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block home %}
+Hi {{ user.email }}!
+{% if request.user.uloga_id == 4 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiStudent' student_id=user.id %}">Predmeti</a>
+{% elif request.user.uloga_id == 5 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiProfesor' %}">Predmeti</a>
+{% elif request.user.uloga_id == 6 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiAdmin' %}">Predmeti</a>
+	<a href="{% url 'studenti' %}">Studenti</a>
+	<a href="{% url 'profesori' %}">Profesori</a>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock home %}

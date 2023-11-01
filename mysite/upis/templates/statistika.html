@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block statistika %}
+
+{% if request.user.uloga_id == 4 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiStudent' student_id=user.id %}">Predmeti</a>
+	<a href="{% url 'filtriranje' student_id=user.id %}">Filtriranje</a>
+	<a href="{% url 'statistika' student_id=user.id %}">Statistika</a>
+	
+	<h2>Broj predmeta koji su polozeni, a pripadaju kategoriji obavezan je: {{ polozeniObavezni }}</h2>
+	<h2>Broj predmeta koji su upisani, nisu polozeni, a imaju preko 6 ECTS-a: {{ upisanipreko6ECTS }}</h2>
+{% else %}
+	<h2>Nemate pravo pristupa</h2>
+{% endif %}
+
+
+{% endblock statistika %}

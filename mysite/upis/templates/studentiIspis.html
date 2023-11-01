@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block studentiIspis %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiAdmin' %}">Predmeti</a>
+	<a href="{% url 'studenti' %}">Studenti</a>
+	<a href="{% url 'profesori' %}">Profesori</a>
+	
+	<h1>Polozeni predmeti</h1>
+	<table border="1">
+		<tr>
+			<th>Predmeti</th>
+			<th>Ects</th>
+		</tr>
+		{% for predmet in predmeti %}
+			{% for upis in upisi %}
+				{% if predmet.id == upis.predmet_id and upis.status == "pass" %}
+					<tr>
+						<td>{{ predmet.name }}</td>
+						<td>{{ predmet.ects }}</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+		<tr>
+			<th>Ukupno:</th>
+			<th>{{ PolozeniECTS}}</th>
+		</tr>
+	</table>
+	
+	<h1>Upisani predmeti</h1>
+	<table border="1">
+		<tr>
+			<th>Predmeti</th>
+			<th>Ects</th>
+		</tr>
+		{% for predmet in predmeti %}
+			{% for upis in upisi %}
+				{% if predmet.id == upis.predmet_id and upis.status == "enr" %}
+					<tr>
+						<td>{{ predmet.name }}</td>
+						<td>{{ predmet.ects }}</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+		<tr>
+			<th>Ukupno:</th>
+			<th>{{ UpisaniECTS}}</th>
+		</tr>
+	</table>
+{% endblock studentiIspis %}

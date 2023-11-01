@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block studenti %}
+
+{% if request.user.uloga_id == 6 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiAdmin' %}">Predmeti</a>
+	<a href="{% url 'studenti' %}">Studenti</a>
+	<a href="{% url 'profesori' %}">Profesori</a>
+	<h1>Studenti</h1>
+	<table border="1">
+	<tr>
+		<th>Student</th>
+		<th>Status</th>
+		<th>Uredi studenta</th>
+		<th>Uredi upisni list</th>
+		<th>Polozeni i Upisani</th>
+	</tr>
+	{% for student in korisnici %}
+		{% if student.uloga_id == 4 %}
+			<tr>
+				<td>{{ student.email }}</td>
+				<td>{{ student.status }}</td>
+				<td> <a href="{% url 'urediStudent' student_id=student.id %}"> Uredi </a> </td>
+				<td> <a href="{% url 'urediUpisniList' student_id=student.id %}"> Uredi </a></td>
+				<td> <a href="{% url 'studentiIspis' student_id=student.id %}"> Enter </a></td>
+			</tr>
+		{% endif %}
+	{% endfor %}
+	</table>
+	<a href="{% url 'dodajKorisnika' %}">Dodaj studenta</a>
+{% else %}
+	<h2>Nemate pravo pristupa</h2>
+{% endif %}
+
+
+{% endblock studenti %}
+

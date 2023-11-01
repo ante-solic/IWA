@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block filtriranje %}
+
+{% if request.user.uloga_id == 4 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiStudent' student_id=user.id %}">Predmeti</a>
+	<a href="{% url 'filtriranje' student_id=user.id %}">Filtriranje</a>
+	<a href="{% url 'statistika' student_id=user.id %}">Statistika</a>
+	
+	<form action="{% url 'filtriranje' student_id=user.id %}" method="post">
+		{% csrf_token %}
+		<label for="semestar">Unesi semestar:</label><br>
+		<input type="text" id="semestar" name="semestar" value="1">
+		<input type="submit" value="Submit">
+	</form>
+	<form action="{% url 'filtriranje' student_id=user.id %}" method="post">
+		{% csrf_token %}
+		<label for="ects">Unesi ects:</label><br>
+		<input type="text" id="ects" name="ects" value="1">
+		<input type="submit" value="Submit">
+	</form>
+	<form action="{% url 'filtriranje' student_id=user.id %}" method="post">
+		{% csrf_token %}
+		<label for="oboje">Unesi semestar i ects:</label><br>
+		<input type="text" id="semestar" name="semestar" value="1">
+		<input type="text" id="ects" name="ects" value="1">
+		<input type="submit" value="Submit">
+	</form>
+	{% if request.user.status == 'red' %}
+		<table>
+			<tr>
+				<th>Predmet</th>
+				<th>Ects</th>
+				<th>Semestar</th>
+			</tr>
+			{% for predmet in predmeti %}
+				<tr>
+					<th>{{ predmet.name }}</th>
+					<th>{{ predmet.ects }}</th>
+					<th>{{ predmet.sem_red }}</th>
+				</tr>
+			{% endfor %}
+		</table>
+	{% elif request.user.status == 'izv' %}	
+		<table>
+			<tr>
+				<th>Predmet</th>
+				<th>Ects</th>
+				<th>Semestar</th>
+			</tr>
+			{% for predmet in predmeti %}
+				<tr>
+					<th>{{ predmet.name }}</th>
+					<th>{{ predmet.ects }}</th>
+					<th>{{ predmet.sem_izv }}</th>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+{% else %}
+	<h2>Nemate pravo pristupa</h2>
+{% endif %}
+
+{% endblock filtriranje %}

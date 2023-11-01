@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block predmetiStudent %}
+
+{% if request.user.uloga_id == 4 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiStudent' student_id=user.id %}">Predmeti</a>
+	<a href="{% url 'filtriranje' student_id=user.id %}">Filtriranje</a>
+	<a href="{% url 'statistika' student_id=user.id %}">Statistika</a>
+	{% if request.user.status == 'red' %}
+		{% for i in '123456' %}
+			<h3>{{ i }}.Semestar</h3>
+			<table border="1">
+				<tr>
+					<th>Predmet</th>
+					<th>Ects</th>
+					<th>Izborni</th>
+					<th>Status</th>
+				</tr>
+				{% for predmet in predmeti %}
+						{% if predmet.sem_red|stringformat:"i" == i %}
+						<tr>
+							<td>{{ predmet.name }}</td>
+							<td>{{ predmet.ects }}</td>
+							<td>{{ predmet.izborni }}</td>
+							{% if predmet.id in id_predmeta %}
+								{% for upis in upisi %}
+									{% if upis.predmet_id == predmet.id and upis.status == 'pass' and upis.korisnik_id == user.id %}
+										<td>Polozen</td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'lst' and upis.korisnik_id == user.id %}
+										<td>Izgubio potpis</td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'enr' and upis.korisnik_id == user.id %}
+										<td><a href="{% url 'ispisiPredmet' predmet_id=predmet.id student_id=user.id %}">Ispis</a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'not' and upis.korisnik_id == user.id %}
+										<td><a href="{% url 'upisiPredmet' predmet_id=predmet.id student_id=user.id %}">Upis</a></td>
+									{% endif %}
+								{% endfor %}
+							{% elif predmet.id not in id_predmeta %}
+								<td><a href="{% url 'upisiPredmet' predmet_id=predmet.id student_id=user.id %}">Upis</a></td>
+							{% else %}
+								<td><a href="{% url 'upisiPredmet' predmet_id=predmet.id student_id=user.id %}">Upis</a></td>
+							{% endif %}
+						</tr>
+						{% endif %}
+				{% endfor %}
+			</table>
+		{% endfor %}
+	{% elif request.user.status == 'izv' %}
+		{% for i in '12345678' %}
+			<h3>{{ i }}.Semestar</h3>
+			<table border="1">
+				<tr>
+					<th>Predmet</th>
+					<th>Ects</th>
+					<th>Izborni</th>
+					<th>Status</th>
+				</tr>
+				{% for predmet in predmeti %}
+						{% if predmet.sem_izv|stringformat:"i" == i %}
+						<tr>
+							<td>{{ predmet.name }}</td>
+							<td>{{ predmet.ects }}</td>
+							<td>{{ predmet.izborni }}</td>
+							{% if predmet.id in id_predmeta %}
+								{% for upis in upisi %}
+									{% if upis.predmet_id == predmet.id and upis.status == 'pass' and upis.korisnik_id == user.id %}
+										<td>Polozen</td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'lst' and upis.korisnik_id == user.id %}
+										<td>Izgubio potpis</td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'enr' and upis.korisnik_id == user.id %}
+										<td><a href="{% url 'ispisiPredmet' predmet_id=predmet.id student_id=user.id %}">Ispis</a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'not' and upis.korisnik_id == user.id %}
+										<td><a href="{% url 'upisiPredmet' predmet_id=predmet.id student_id=user.id %}">Upis</a></td>
+									{% endif %}
+								{% endfor %}
+							{% elif predmet.id not in id_predmeta %}
+								<td><a href="{% url 'upisiPredmet' predmet_id=predmet.id student_id=user.id %}">Upis</a></td>
+							{% endif %}
+						</tr>
+						{% endif %}
+				{% endfor %}
+			</table>
+		{% endfor %}
+	{% endif %}
+{% else %}
+	<h2>Nemate pravo pristupa</h2>
+{% endif %}
+
+
+{% endblock predmetiStudent %}

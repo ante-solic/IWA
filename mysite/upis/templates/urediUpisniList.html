@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block urediUpisniList %}
+
+{% if request.user.uloga_id == 6 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiAdmin' %}">Predmeti</a>
+	<a href="{% url 'studenti' %}">Studenti</a>
+	<a href="{% url 'profesori' %}">Profesori</a>
+	<h1> Upisni List studenta {{ student.email }} </h1> 
+	{% if student.status == 'red' %}
+		{% for i in '123456' %}
+			<h3>{{ i }}.Semestar</h3>
+			<table border="1">
+				<tr>
+					<th>Predmet</th>
+					<th>Ects</th>
+					<th>Izborni</th>
+					<th>Status</th>
+					<th>Promjeni Status</th>
+				</tr>
+				{% for predmet in predmeti %}
+						{% if predmet.sem_red|stringformat:"i" == i %}
+						<tr>
+							<td>{{ predmet.name }}</td>
+							<td>{{ predmet.ects }}</td>
+							<td>{{ predmet.izborni }}</td>
+							{% if predmet.id in id_predmeta %}
+								{% for upis in upisi %}
+									{% if upis.predmet_id == predmet.id and upis.status == 'pass' and upis.korisnik_id == student.id %}
+										<td>Polozen</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'lst' and upis.korisnik_id == student.id %}
+										<td>Izgubio potpis</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'enr' and upis.korisnik_id == student.id %}
+										<td>Upisan</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'not' and upis.korisnik_id == student.id %}
+										<td>Nije upisan</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% endif %}
+								{% endfor %}
+							{% elif predmet.id not in id_predmeta %}
+								<td>Nije upisan</td>
+								<td><a href="{% url 'IzradiUpis' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+							{% else %}
+								<td>Nije upisan</td>
+								<td><a href="{% url 'IzradiUpis' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+							{% endif %}
+						</tr>
+						{% endif %}
+				{% endfor %}
+			</table>
+		{% endfor %}
+	{% elif student.status == 'izv' %}
+		{% for i in '12345678' %}
+			<h3>{{ i }}.Semestar</h3>
+			<table border="1">
+				<tr>
+					<th>Predmet</th>
+					<th>Ects</th>
+					<th>Izborni</th>
+					<th>Status</th>
+					<th>Promjeni Status</th>
+				</tr>
+				{% for predmet in predmeti %}
+						{% if predmet.sem_izv|stringformat:"i" == i %}
+						<tr>
+							<td>{{ predmet.name }}</td>
+							<td>{{ predmet.ects }}</td>
+							<td>{{ predmet.izborni }}</td>
+							{% if predmet.id in id_predmeta %}
+								{% for upis in upisi %}
+									{% if upis.predmet_id == predmet.id and upis.status == 'pass' and upis.korisnik_id == student.id %}
+										<td>Polozen</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'lst' and upis.korisnik_id == student.id %}
+										<td>Izgubio potpis</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'enr' and upis.korisnik_id == student.id %}
+										<td>Upisan</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% elif upis.predmet_id == predmet.id and upis.status == 'not' and upis.korisnik_id == student.id %}
+										<td>Nije upisan</td>
+										<td><a href="{% url 'promjeniStatusAdmin' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+									{% endif %}
+								{% endfor %}
+							{% elif predmet.id not in id_predmeta %}
+								<td>Nije upisan</td>
+								<td><a href="{% url 'IzradiUpis' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+							{% else %}
+								<td>Nije upisan</td>
+								<td><a href="{% url 'IzradiUpis' student_id=student.id predmet_id=predmet.id %}"> Uredi </a></td>
+							{% endif %}
+						</tr>
+						{% endif %}
+				{% endfor %}
+			</table>
+		{% endfor %}
+	{% endif %}
+{% else %}
+	<h1>Nemate pravo pristupa</h1>
+{% endif %}
+
+{% endblock urediUpisniList %}

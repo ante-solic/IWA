@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block promjeniStatusAdmin %}
+
+<h2>Promjeni status studenta:</h2>
+<form method="post">
+	{% csrf_token %}
+	{{ form.as_p}}
+	<button type="submit">Stvori</button>
+</form>
+
+{% endblock promjeniStatusAdmin %}

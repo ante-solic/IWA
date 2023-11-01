@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block predmetiProfesor %}
+
+{% if request.user.uloga_id == 5 %}
+	<a href="{% url 'logout' %}">Logout</a>
+	<a href="{% url 'predmetiProfesor' %}">Predmeti</a>
+	<h3>Predmeti</h3>
+	<table border="1">
+	{% for predmet in predmeti %}
+		{% if predmet.nositelj_predmeta_id == user.id %}
+			<tr>
+				<td>{{ predmet.name }}</td>
+				<td> <a href="{% url 'studentiPredmet' predmet_id=predmet.id %}">Popis studenata</a></td>
+			</tr>
+		{% endif%}
+	{% endfor %}
+	</table>
+{% else %}
+	<h2>Nemate pravo pristupa</h2>
+{% endif %}
+
+
+{% endblock predmetiProfesor %}

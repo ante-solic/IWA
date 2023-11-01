@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block IzradiUpis %}
+
+<h2>Izradi Upis</h2>
+<form method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit">Spremi promjene</button>
+</form>
+
+{% endblock IzradiUpis %}
